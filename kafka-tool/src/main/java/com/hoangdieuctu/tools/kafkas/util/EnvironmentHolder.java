@@ -13,7 +13,7 @@ import java.util.Map;
 @Component
 public class EnvironmentHolder {
 
-    @Value("${envs}")
+    @Value("${kafka.envs}")
     private String envs;
 
     private List<EnvConfig> configs = new ArrayList<>();

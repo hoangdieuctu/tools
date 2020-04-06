@@ -114,8 +114,8 @@
                 <div class="modal-body">
                     <form>
                         <div class="form-group">
-                            <label for="topic">Topic pattern</label>
-                            <input class="form-control" type="text" id="topic">
+                            <label for="topic-exclude">Topic pattern</label>
+                            <input class="form-control" type="text" id="topic-exclude">
                             <small class="form-text name-rules">The topics that match with this pattern will not be shown anywhere</small>
                         </div>
                     </form>
@@ -261,7 +261,7 @@
         });
 
         $('#save-exclusion').click(function() {
-            var element = $('#topic');
+            var element = $('#topic-exclude');
             var topic = element.val();
             if(topic == '') {
                 element.focus();
