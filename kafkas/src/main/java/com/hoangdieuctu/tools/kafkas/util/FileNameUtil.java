@@ -1,7 +1,7 @@
 package com.hoangdieuctu.tools.kafkas.util;
 
 public class FileNameUtil {
-    private static final String ROOT_FOLDER = "kafka-tool";
+    private static final String ROOT_FOLDER = "kafkas";
     private static final String PRODUCE_FOLDER = "produce";
     private static final String SETTING_FOLDER = "setting";
     private static final String INDEX_FOLDER = "index";
