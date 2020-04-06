@@ -215,8 +215,6 @@
     var customId;
 
     $(document).ready(function () {
-        updateTitle("Consume");
-
         loadLocalStorage();
         loadTopics($('#envs').val());
 
@@ -345,8 +343,6 @@
             $('#envs').prop('disabled', true);
             $('#topics').prop('disabled', true);
             $('#offset').prop('disabled', true);
-
-            updateTitle('Consume | ' + topic, true);
 
             var subscribedTopic = '/topic/' + env + '_' + topic;
             if(offset === 'oldest' || offset === 'advance') {

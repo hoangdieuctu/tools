@@ -66,8 +66,6 @@
     var groupItems;
 
     $(document).ready(function () {
-        updateTitle("Consumer Group");
-
         loadConsumerGroups($('#envs').val());
 
         $('.kafka-select').select2({

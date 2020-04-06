@@ -66,34 +66,6 @@
                     <div class="col-xl-6 col-md-6 mb-6">
                         <div class="card shadow mb-4">
                             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                <h6 class="m-0 font-weight-bold text-primary">Bulk Configuration</h6>
-                                <div class="dropdown no-arrow">
-                                    <a class="dropdown-toggle" style="color: #4e73df">
-                                        <i title="Edit" id="edit-bulk-config" class="fas fa-edit fa-sm fa-fw"></i>
-                                        <i title="Save" id="save-bulk-config" style="display: none" class="fas fa-check fa-sm fa-fw"></i>
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="panel-body admin-body" id="bulk-setting">
-                                <div class="body-title">The configuration for bulk produce.</div>
-                                <div class="setting-item form-group">
-                                    <label for="element-list">Element List</label>
-                                    <input disabled class="form-control editable-text" type="text" id="element-list">
-                                    <small class="form-text name-rules">Positive numbers separate by comma</small>
-                                </div>
-
-                                <div class="setting-item form-group">
-                                    <label for="thread-list">Thread List</label>
-                                    <input disabled class="form-control editable-text" type="text" id="thread-list">
-                                    <small class="form-text name-rules">Positive numbers separate by comma</small>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-xl-6 col-md-6 mb-6">
-                        <div class="card shadow mb-4">
-                            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                                 <h6 class="m-0 font-weight-bold text-primary">Favorite Topics (<span id="fav-topic-count">0</span>)</h6>
                                 <div class="dropdown no-arrow">
                                     <a class="dropdown-toggle" style="color: #4e73df">
@@ -272,11 +244,8 @@
     var selectedFolder;
 
     $(document).ready(function () {
-        updateTitle("Administrator");
-
         loadTopicExclusion();
         loadClientConsumers();
-        loadBulkConfig();
         loadFavoriteTopics();
         loadProduceStorage();
         loadProduceFolders();
@@ -417,39 +386,6 @@
             }, function () {
                 console.log('Cannot add a produce folder');
             })
-        });
-
-        $('#edit-bulk-config').click(function () {
-            $(this).hide();
-            $('#save-bulk-config').show();
-            $('#bulk-setting').find('.editable-text').attr('disabled', false)
-        });
-
-        $('#save-bulk-config').click(function () {
-            var elements = $('#element-list').val();
-            var threads = $('#thread-list').val();
-
-            var json = {
-                'elements': elements,
-                'threads': threads
-            };
-
-            sendAjax({
-                'url': '/admin/bulk-config',
-                'data': JSON.stringify(json)
-            }, 'put', function (success) {
-                if(success) {
-                    $('#save-bulk-config').hide();
-                    $('#edit-bulk-config').show();
-                    $('#bulk-setting').find('.editable-text').attr('disabled', true);
-                    toastSuccess('Saved');
-                    loadBulkConfig();
-                } else {
-                    toastWarning('Error');
-                }
-            }, function () {
-                toastWarning('Error');
-            });
         });
     });
 
@@ -632,21 +568,6 @@
         selectedJsonName = name;
         selectedFolder = folder;
         $('#deleting-produce-storage-modal').modal('toggle');
-    }
-
-    function loadBulkConfig(callback) {
-        sendAjax({
-            'url': '/admin/bulk-config'
-        }, 'get', function (data) {
-            $('#element-list').val(data.elementString);
-            $('#thread-list').val(data.threadString);
-
-            if(callback) {
-                callback();
-            }
-        }, function () {
-            console.log('Cannot load data');
-        })
     }
 </script>
 </body>

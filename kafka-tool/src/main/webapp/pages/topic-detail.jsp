@@ -116,11 +116,5 @@
 <!-- Import Common JavaScript -->
 <jsp:include page="common/js.jsp"/>
 
-<script>
-    $(document).ready(function () {
-        updateTitle("Topic Details");
-    });
-</script>
-
 </body>
 </html>

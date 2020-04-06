@@ -139,8 +139,6 @@
     var timer;
 
     $(document).ready(function () {
-        updateTitle("Group Details");
-
         loadGroupDetail(env, groupId);
         loadConsumerLag(env, groupId);
         loadLagReporter();

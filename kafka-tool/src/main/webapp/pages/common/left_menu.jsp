@@ -31,7 +31,6 @@
             <div class="bg-white py-2 collapse-inner rounded">
                 <a id="consume" class="collapse-item" href="/consume"><i class="fas fa-fw fa-download"></i> Consume</a>
                 <a id="produce" class="collapse-item" href="/produce"><i class="fas fa-fw fa-upload"></i> Produce</a>
-                <a id="bulk-produce" class="collapse-item" href="/bulk-produce"><i class="fas fa-fw fa-calendar"></i> Bulk Produce</a>
             </div>
         </div>
     </li>
@@ -62,7 +61,8 @@
 
     <div class="author text-center">
 
-        <div>KTVN @ Dieu Nguyen</div>
+        <div>Dieu Nguyen</div>
+        <div><i>hoangdieuctu@gmail.com</i></div>
         <div style="padding-top: 10px">
             <span title="Like" id="like-icon" class="fa fa-heart"></span> <span id="like-count">0</span>
         </div>

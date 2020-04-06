@@ -292,8 +292,6 @@
     var contextFileName;
 
     $(document).ready(function () {
-        updateTitle("Produce");
-
         window.addEventListener('click', function() {
             $('.menu').hide();
         });
@@ -363,8 +361,6 @@
                     'url': '/produce?env=' + env + '&topic=' + topic + '&partition=' + partition,
                     'data': msg
                 }, 'post', function (data) {
-                    updateTitle('Produce | ' + topic, true);
-
                     toastSuccess('Sent');
                     console.log('Send kafka message success');
                     $('#timestamp').html(data.timestamp);

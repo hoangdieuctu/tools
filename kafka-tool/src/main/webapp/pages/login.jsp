@@ -50,8 +50,6 @@
 <jsp:include page="common/js.jsp"/>
 <script>
     $(document).ready(function () {
-        updateTitle("Login");
-
         var href = window.location.href;
         if(href.indexOf('error') > 0) {
             $('#error').show();

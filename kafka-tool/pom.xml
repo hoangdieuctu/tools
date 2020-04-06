@@ -9,11 +9,11 @@
         <relativePath/>
     </parent>
 
-    <groupId>com.karrostech</groupId>
-    <artifactId>kafka-tool</artifactId>
+    <groupId>com.hoangdieuctu.tools</groupId>
+    <artifactId>kafkas</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>war</packaging>
-    <name>Kafka Tool</name>
+    <name>kafkas</name>
 
     <properties>
         <java.version>1.8</java.version>

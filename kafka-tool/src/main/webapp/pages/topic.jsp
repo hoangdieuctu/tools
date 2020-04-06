@@ -69,8 +69,6 @@
 <script>
     var table;
     $(document).ready(function () {
-        updateTitle("Topic");
-
         table = $('#topic-table');
 
         table.dataTable({
