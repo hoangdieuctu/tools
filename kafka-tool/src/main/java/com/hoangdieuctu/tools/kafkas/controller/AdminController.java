@@ -5,19 +5,11 @@ import com.hoangdieuctu.tools.kafkas.model.Environment;
 import com.hoangdieuctu.tools.kafkas.model.FavoriteTopicSetting;
 import com.hoangdieuctu.tools.kafkas.model.TopicExclusionSetting;
 import com.hoangdieuctu.tools.kafkas.service.AdminService;
-import com.hoangdieuctu.tools.kafkas.util.DateTimeUtil;
 import lombok.extern.slf4j.Slf4j;
-import net.lingala.zip4j.exception.ZipException;
-import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.List;
 import java.util.Map;
 
@@ -98,31 +90,6 @@ public class AdminController {
     @GetMapping("/produce-folder")
     public List<String> getProduceFolder() {
         return adminService.getAdminStorageFolders();
-    }
-
-    @ResponseBody
-    @GetMapping(value = "/backup")
-    public void backup(HttpServletResponse response) throws IOException {
-        StringBuilder builder = new StringBuilder();
-        builder.append("kafka-tool-").append(DateTimeUtil.getBaicDate()).append(".zip");
-
-        response.setStatus(HttpServletResponse.SC_OK);
-        response.addHeader("Content-Disposition", "attachment; filename=" + builder.toString());
-
-        OutputStream oStream = response.getOutputStream();
-        try {
-            InputStream iStream = adminService.backup();
-            IOUtils.copy(iStream, oStream);
-
-            IOUtils.closeQuietly(iStream);
-            oStream.flush();
-        } catch (ZipException e) {
-            log.error("Could not zip file. {}", e.getMessage());
-        } catch (FileNotFoundException e) {
-            log.error("Could not load zip file. {}", e.getMessage());
-        } finally {
-            IOUtils.closeQuietly(oStream);
-        }
     }
 
     @ResponseBody

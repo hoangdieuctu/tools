@@ -19,12 +19,6 @@
                 <!-- Page Heading -->
                 <div class="d-sm-flex align-items-center justify-content-between mb-4">
                     <h1 class="h3 mb-0 text-gray-800">Administrator</h1>
-                    <a href="/admin/backup" class="btn btn-primary btn-icon-split">
-                        <span class="icon text-white-50">
-                          <i class="fas fa-hdd"></i>
-                        </span>
-                        <span class="text">Backup</span>
-                    </a>
                 </div>
 
                 <!-- Page Body -->

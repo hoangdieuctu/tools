@@ -188,7 +188,6 @@ public class AdminService {
         fileRepository.save(path, content);
     }
 
-
     public List<String> getStorageFolders() {
         return getAdminStorageFolders();
     }
