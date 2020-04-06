@@ -14,15 +14,19 @@ A Kafka broker can be a part of a Kafka cluster.
 A broker can be a cluster controller or not and also be a leader (owner) of several partitions and keeps a redundant copy of several other partitions (for replication).
 
 ### Installing ###
+1. Setup a kafka network
+```bash
+docker network create kafka-net --driver bridge
+```
 
-1. Install KafKa Zookeeper
+2. Install KafKa Zookeeper
 ```bash
 docker run -p 2181:2181 --network kafka-net -e ALLOW_ANONYMOUS_LOGIN=yes -d --name zookeeper-server bitnami/zookeeper:latest
 ```
 *Set “ALLOW_ANONYMOUS_LOGIN” configuration to true because we want to allow users to connect to ZooKeeper easily (without authentication).
 This configuration is not suitable for production use.*
 
-2. Install Kafka Broker
+3. Install Kafka Broker
 ```bash
 docker run -p 9092:9092 --network kafka-net -e ALLOW_PLAINTEXT_LISTENER=yes -e KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper-server:2181 -e KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://localhost:9092  -d --name kafka-server bitnami/kafka:latest
 ```
