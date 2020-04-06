@@ -31,12 +31,12 @@ java -Dkafka.envs=LOCAL:127.0.0.1:9092,REMOTE:10.20.20.10:9092 -jar kafkas.war
 
 ### Configuration ###
 
-1. **kafka.envs**: Multiple hosts separate by command. Default is LOCAL:localhost:9092
-2. **spring.security.user.name**: Admin username. Default is 'admin'
-3. **spring.security.user.password**: Admin password. Default is 'Admin@123'.
-4. **produce.history.items**: Total history records. Default is 1024 records.
-5. **max.kafka.admin.client.connection.pool**: Admin connection pool. Default is 20.
-6. **max.kafka.consumer.lag.connection.pool**: Lag connection pool. Default is 10.
+1. **kafka.envs**: Multiple hosts separate by command. Default is **LOCAL:localhost:9092**
+2. **spring.security.user.name**: Admin username. Default is **admin**.
+3. **spring.security.user.password**: Admin password. Default is **Admin@123**.
+4. **produce.history.items**: Total history records. Default is **1024** records.
+5. **max.kafka.admin.client.connection.pool**: Admin connection pool. Default is **20**.
+6. **max.kafka.consumer.lag.connection.pool**: Lag connection pool. Default is **10**.
 
 ### Features ###
 1. Index page
@@ -55,3 +55,6 @@ View details of a topic.
 ![picture](topic-detail.png)
 6. Admin page
 ![picture](admin.png)
+
+### Donate ###
+https://www.patreon.com/hoangdieuctu
