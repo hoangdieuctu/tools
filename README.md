@@ -9,5 +9,5 @@ The tools will be installed by docker
 1. Elasticsearch and Kibana
 2. Kafka zookeeper and broker
 
-## kafka tool ##
+## kafkas ##
 The powerful tool that help to interact with kafka such as: consume data, produce message, monitor consumer lag...
