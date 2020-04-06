@@ -33,7 +33,7 @@ public class KafkaService {
     @Autowired
     private MessagePreSendingProcessor preSendingProcessor;
 
-    public List<TopicInfo> getAllTopics(Environment env) {
+    public List<TopicInfo> getAllTopics(EnvConfig env) {
         Map<String, List<PartitionInfo>> topics = kafkaRepository.getKafkaTopics(env);
         List<String> exclusions = adminService.getTopicsExclusion();
 
@@ -53,12 +53,12 @@ public class KafkaService {
         return results;
     }
 
-    public Set<String> getTopics(Environment env) {
+    public Set<String> getTopics(EnvConfig env) {
         Map<String, List<PartitionInfo>> kafkaTopics = kafkaRepository.getKafkaTopics(env);
         return kafkaTopics.keySet();
     }
 
-    public List<String> getFilteredTopics(Environment env) {
+    public List<String> getFilteredTopics(EnvConfig env) {
         Set<String> topics = getTopics(env);
         List<String> exclusions = adminService.getTopicsExclusion();
 
@@ -68,7 +68,7 @@ public class KafkaService {
                 .collect(Collectors.toList());
     }
 
-    public List<String> getFilteredFavTopics(Environment env) {
+    public List<String> getFilteredFavTopics(EnvConfig env) {
         List<String> topics = getFilteredTopics(env);
 
         List<String> favTopics = adminService.getFavTopicsSetting();
@@ -78,35 +78,35 @@ public class KafkaService {
                 .collect(Collectors.toList());
     }
 
-    public List<String> getConsumerGroups(Environment env) {
+    public List<String> getConsumerGroups(EnvConfig env) {
         return kafkaRepository.getConsumerGroups(env);
     }
 
-    public ConsumerGroupDetail describeConsumerGroup(Environment env, String groupId) {
+    public ConsumerGroupDetail describeConsumerGroup(EnvConfig env, String groupId) {
         return kafkaRepository.describeConsumerGroup(env, groupId);
     }
 
-    public Map<String, ConsumerGroupDetail> describeConsumerGroups(Environment env, List<String> groupIds) {
+    public Map<String, ConsumerGroupDetail> describeConsumerGroups(EnvConfig env, List<String> groupIds) {
         return kafkaRepository.describeConsumerGroups(env, groupIds);
     }
 
-    public Map<TopicPartition, PartitionOffsets> getConsumerGroupOffsets(Environment env, String topic, String groupId) {
+    public Map<TopicPartition, PartitionOffsets> getConsumerGroupOffsets(EnvConfig env, String topic, String groupId) {
         return kafkaRepository.getConsumerGroupOffsets(env, topic, groupId);
     }
 
-    public List<Lag> getConsumerLags(Environment env, String groupId) {
+    public List<Lag> getConsumerLags(EnvConfig env, String groupId) {
         return kafkaRepository.getConsumerLags(env, groupId);
     }
 
-    public KafkaRecordData send(Environment env, String topic, String message) {
+    public KafkaRecordData send(EnvConfig env, String topic, String message) {
         return this.send(env, topic, null, message);
     }
 
-    public KafkaRecordData send(Environment env, String topic, Integer partition, String message) {
+    public KafkaRecordData send(EnvConfig env, String topic, Integer partition, String message) {
         return this.send(env, topic, partition, null, message);
     }
 
-    public KafkaRecordData send(Environment env, String topic, Integer partition, String key, String message) {
+    public KafkaRecordData send(EnvConfig env, String topic, Integer partition, String key, String message) {
         String processedMsg = preSendingProcessor.process(message);
         return kafkaRepository.send(env, topic, partition, key, processedMsg);
     }
@@ -120,7 +120,7 @@ public class KafkaService {
         return true;
     }
 
-    public void evictKafkaToolGroups(Environment env) {
+    public void evictKafkaToolGroups(EnvConfig env) {
         List<String> allGroups = getConsumerGroups(env);
         List<String> kafkaToolGroups = allGroups.stream().filter(g -> g.startsWith(KAFKA_TOOL_CONSUMER_PREFIX)).collect(Collectors.toList());
         log.info("[{}] Validate {} groups", env, kafkaToolGroups.size());
@@ -147,11 +147,11 @@ public class KafkaService {
         kafkaRepository.deleteConsumerGroups(env, groupsWillBeDeleted);
     }
 
-    public List<PartitionData> getTopicDetails(Environment env, String topic) {
+    public List<PartitionData> getTopicDetails(EnvConfig env, String topic) {
         return kafkaRepository.getTopicDetails(env, topic);
     }
 
-    public List<TopicConfigValue> describeTopic(Environment env, String topic) {
+    public List<TopicConfigValue> describeTopic(EnvConfig env, String topic) {
         return kafkaRepository.describeTopic(env, topic);
     }
 }

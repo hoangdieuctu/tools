@@ -21,7 +21,7 @@ public class WebsocketMessageSender {
 
     private String getTopic(ConsumerKey consumerKey) {
         StringBuilder builder = new StringBuilder();
-        builder.append(PREFIX_TOPIC).append(consumerKey.getEnv().name()).append("_").append(consumerKey.getTopic());
+        builder.append(PREFIX_TOPIC).append(consumerKey.getEnv().getName()).append("_").append(consumerKey.getTopic());
 
         if (ConsumerOffset.oldest.equals(consumerKey.getConsumerOffset())) {
             builder.append("_").append(consumerKey.getCustomId());

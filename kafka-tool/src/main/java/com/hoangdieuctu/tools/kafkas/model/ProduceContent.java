@@ -1,15 +1,15 @@
 package com.hoangdieuctu.tools.kafkas.model;
 
 public class ProduceContent {
-    private Environment env;
+    private String env;
     private String topic;
     private String json;
 
-    public Environment getEnv() {
+    public String getEnv() {
         return env;
     }
 
-    public void setEnv(Environment env) {
+    public void setEnv(String env) {
         this.env = env;
     }
 

@@ -3,6 +3,7 @@ package com.hoangdieuctu.tools.kafkas.config;
 import com.hoangdieuctu.tools.kafkas.model.ConsumerKey;
 import com.hoangdieuctu.tools.kafkas.model.ConsumerOffset;
 import com.hoangdieuctu.tools.kafkas.service.ConsumerRunnerService;
+import com.hoangdieuctu.tools.kafkas.util.EnvironmentHolder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
@@ -29,6 +30,9 @@ public class WebsocketConnectionHolder {
     @Autowired
     private ConsumerRunnerService consumerRunnerService;
 
+    @Autowired
+    private EnvironmentHolder envsHolder;
+
     private String getSessionId(AbstractSubProtocolEvent event) {
         StompHeaderAccessor sha = StompHeaderAccessor.wrap(event.getMessage());
         return sha.getSessionId();
@@ -47,13 +51,13 @@ public class WebsocketConnectionHolder {
         List<String> partitionNumbers = (List<String>) headers.get("partitionNumber");
 
         if (CollectionUtils.isEmpty(offsets) || ConsumerOffset.latest.name().equals(offsets.get(0))) {
-            return new ConsumerKey(envs.get(0), topics.get(0));
+            return new ConsumerKey(envsHolder.getEnv(envs.get(0)), topics.get(0));
         }
 
         Long partitionOffset = CollectionUtils.isEmpty(partitionOffsets) ? null : Long.parseLong(partitionOffsets.get(0));
         Integer partitionNumber = CollectionUtils.isEmpty(partitionNumbers) ? null : Integer.parseInt(partitionNumbers.get(0));
 
-        return new ConsumerKey(envs.get(0), topics.get(0), customIds.get(0), partitionOffset, partitionNumber);
+        return new ConsumerKey(envsHolder.getEnv(envs.get(0)), topics.get(0), customIds.get(0), partitionOffset, partitionNumber);
     }
 
     public synchronized final void onConnected(AbstractSubProtocolEvent event) {

@@ -7,16 +7,13 @@ import com.hoangdieuctu.tools.kafkas.messaging.WebsocketMessageSender;
 import com.hoangdieuctu.tools.kafkas.model.*;
 import com.hoangdieuctu.tools.kafkas.repository.FileRepository;
 import com.hoangdieuctu.tools.kafkas.repository.KafkaRepository;
+import com.hoangdieuctu.tools.kafkas.util.EnvironmentHolder;
 import com.hoangdieuctu.tools.kafkas.util.FileNameUtil;
 import lombok.extern.slf4j.Slf4j;
-import net.lingala.zip4j.exception.ZipException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -30,8 +27,6 @@ public class AdminService {
     private static final String FAV_TOPIC_FILE_NAME = "topic-favorite.json";
     private static final String PRODUCE_FOLDER_CONFIG_FILE_NAME = "produce-folder-config.json";
 
-    private static final String ZIP_FILE_NAME = "kafka-tool.zip";
-
     @Autowired
     private FileRepository fileRepository;
 
@@ -43,6 +38,9 @@ public class AdminService {
 
     @Autowired
     private WebsocketMessageSender wsMessageSender;
+
+    @Autowired
+    private EnvironmentHolder envsHolder;
 
     private String getTopicExclusionSettingPath() {
         String path = new StringBuilder(FileNameUtil.getSettingFolder())
@@ -57,7 +55,6 @@ public class AdminService {
                 .toString();
         return path;
     }
-
 
 
     private String getProduceFolderConfigPath() {
@@ -210,21 +207,8 @@ public class AdminService {
         return new Gson().fromJson(produceFolders, ProduceFolderSetting.class);
     }
 
-    public InputStream backup() throws ZipException, FileNotFoundException {
-        log.info("Backing up system");
-
-        StringBuilder builder = new StringBuilder();
-        builder.append(Constants.DOT_STRING)
-                .append(Constants.SPLASH_STRING)
-                .append(FileNameUtil.getRootFolder());
-
-        fileRepository.zipFolder(ZIP_FILE_NAME, builder.toString());
-
-        return new FileInputStream(ZIP_FILE_NAME);
-    }
-
-    public void deleteConsumerGroup(Environment env, String groupId) {
+    public void deleteConsumerGroup(String env, String groupId) {
         log.info("Delete consumer group, env={}, groupId={}", env, groupId);
-        kafkaRepository.deleteConsumerGroups(env, Collections.singleton(groupId));
+        kafkaRepository.deleteConsumerGroups(envsHolder.getEnv(env), Collections.singleton(groupId));
     }
 }

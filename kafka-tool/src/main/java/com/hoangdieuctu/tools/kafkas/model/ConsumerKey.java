@@ -4,7 +4,7 @@ import java.util.Objects;
 
 public class ConsumerKey {
 
-    private Environment env;
+    private EnvConfig env;
     private String topic;
     private long date = System.currentTimeMillis(); // don't add to hashcode and equals
 
@@ -15,24 +15,24 @@ public class ConsumerKey {
 
     private String filter; // don't add to hashcode and equals
 
-    public ConsumerKey(String env, String topic) {
-        this.env = Environment.valueOf(env);
+    public ConsumerKey(EnvConfig env, String topic) {
+        this.env = env;
         this.topic = topic;
     }
 
-    public ConsumerKey(String env, String topic, String customId, Long partitionOffset, Integer partitionNumber) {
-        this.env = Environment.valueOf(env);
+    public ConsumerKey(EnvConfig env, String topic, String customId, Long partitionOffset, Integer partitionNumber) {
+        this.env = env;
         this.topic = topic;
         this.customId = customId;
         this.partitionOffset = partitionOffset;
         this.partitionNumber = partitionNumber;
     }
 
-    public Environment getEnv() {
+    public EnvConfig getEnv() {
         return env;
     }
 
-    public void setEnv(Environment env) {
+    public void setEnv(EnvConfig env) {
         this.env = env;
     }
 

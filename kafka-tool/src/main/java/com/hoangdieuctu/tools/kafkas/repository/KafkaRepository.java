@@ -32,7 +32,7 @@ public class KafkaRepository {
     @Autowired
     private KafkaConnectorManager kafkaConnectorManager;
 
-    public Map<String, List<PartitionInfo>> getKafkaTopics(Environment env) {
+    public Map<String, List<PartitionInfo>> getKafkaTopics(EnvConfig env) {
         KafkaConsumer<String, String> consumer = kafkaConnectorManager.getConsumer(env);
         try {
             return consumer.listTopics();
@@ -41,7 +41,7 @@ public class KafkaRepository {
         }
     }
 
-    public KafkaRecordData send(Environment env, String topic, Integer partition, String key, String message) {
+    public KafkaRecordData send(EnvConfig env, String topic, Integer partition, String key, String message) {
         KafkaProducer<String, String> producer = kafkaConnectorManager.getProducer(env);
 
         ProducerRecord<String, String> record = new ProducerRecord<>(topic, partition, key, message);
@@ -57,7 +57,7 @@ public class KafkaRepository {
         }
     }
 
-    public List<String> getConsumerGroups(Environment env) {
+    public List<String> getConsumerGroups(EnvConfig env) {
         AdminClientConnectionPoolWrapper connection = kafkaConnectorManager.getAdminClient(env);
         ListConsumerGroupsResult consumerGroups = connection.listConsumerGroups();
         if (consumerGroups == null) {
@@ -75,7 +75,7 @@ public class KafkaRepository {
         }
     }
 
-    public ConsumerGroupDetail describeConsumerGroup(Environment env, String groupId) {
+    public ConsumerGroupDetail describeConsumerGroup(EnvConfig env, String groupId) {
         AdminClientConnectionPoolWrapper connection = kafkaConnectorManager.getAdminClient(env);
 
         DescribeConsumerGroupsResult describe = connection.describeConsumerGroups(Collections.singleton(groupId));
@@ -97,7 +97,7 @@ public class KafkaRepository {
         }
     }
 
-    public Map<String, ConsumerGroupDetail> describeConsumerGroups(Environment env, List<String> groupIds) {
+    public Map<String, ConsumerGroupDetail> describeConsumerGroups(EnvConfig env, List<String> groupIds) {
         Map<String, ConsumerGroupDetail> results = new HashMap<>();
 
         AdminClientConnectionPoolWrapper connection = kafkaConnectorManager.getAdminClient(env);
@@ -119,7 +119,7 @@ public class KafkaRepository {
         return results;
     }
 
-    public Map<TopicPartition, PartitionOffsets> getConsumerGroupOffsets(Environment env, String topic, String groupId) {
+    public Map<TopicPartition, PartitionOffsets> getConsumerGroupOffsets(EnvConfig env, String topic, String groupId) {
         Map<TopicPartition, Long> endOffsets = getEndOffset(env, topic);
 
         Map<TopicPartition, PartitionOffsets> result = new HashMap<>();
@@ -147,7 +147,7 @@ public class KafkaRepository {
         return result;
     }
 
-    private Map<TopicPartition, Long> getEndOffset(Environment env, String topic) {
+    private Map<TopicPartition, Long> getEndOffset(EnvConfig env, String topic) {
         Map<TopicPartition, Long> endOffsets = new ConcurrentHashMap<>();
 
         KafkaConsumer<String, String> consumer = kafkaConnectorManager.getConsumer(env);
@@ -164,24 +164,24 @@ public class KafkaRepository {
         }
     }
 
-    public List<Lag> getConsumerLags(Environment env, String groupId) {
+    public List<Lag> getConsumerLags(EnvConfig env, String groupId) {
         ConsumerLagConnectionPoolWrapper connection = kafkaConnectorManager.getConsumerLagClient(env);
 
         List<Lag> lags = connection.getConsumerLag(groupId);
         return lags;
     }
 
-    public void deleteConsumerGroups(Environment env, Collection<String> groupIds) {
+    public void deleteConsumerGroups(EnvConfig env, Collection<String> groupIds) {
         AdminClientConnectionPoolWrapper connection = kafkaConnectorManager.getAdminClient(env);
         connection.deleteConsumerGroups(groupIds);
     }
 
-    public List<PartitionData> getTopicDetails(Environment env, String topic) {
+    public List<PartitionData> getTopicDetails(EnvConfig env, String topic) {
         AdminClientConnectionPoolWrapper connection = kafkaConnectorManager.getAdminClient(env);
         return connection.getTopicDetails(topic);
     }
 
-    public List<TopicConfigValue> describeTopic(Environment env, String topic) {
+    public List<TopicConfigValue> describeTopic(EnvConfig env, String topic) {
         AdminClientConnectionPoolWrapper connection = kafkaConnectorManager.getAdminClient(env);
         return connection.describeTopic(topic);
     }

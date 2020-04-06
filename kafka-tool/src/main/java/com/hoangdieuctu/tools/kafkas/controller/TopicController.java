@@ -1,6 +1,5 @@
 package com.hoangdieuctu.tools.kafkas.controller;
 
-import com.hoangdieuctu.tools.kafkas.model.Environment;
 import com.hoangdieuctu.tools.kafkas.model.PartitionData;
 import com.hoangdieuctu.tools.kafkas.model.TopicConfigValue;
 import com.hoangdieuctu.tools.kafkas.model.TopicInfo;
@@ -29,7 +28,7 @@ public class TopicController extends KafkaController {
     }
 
     @GetMapping("/detail")
-    public String detail(Model model, @RequestParam("topic") String topic, @RequestParam("env") Environment env) {
+    public String detail(Model model, @RequestParam("topic") String topic, @RequestParam("env") String env) {
         model.addAttribute("topic", topic);
         model.addAttribute("env", env);
 
@@ -44,13 +43,13 @@ public class TopicController extends KafkaController {
 
     @GetMapping("/all")
     @ResponseBody
-    public List<TopicInfo> getAll(@RequestParam("env") Environment env) {
+    public List<TopicInfo> getAll(@RequestParam("env") String env) {
         return topicService.getAll(env);
     }
 
     @GetMapping("/describe")
     @ResponseBody
-    public List<TopicConfigValue> describeTopic(@RequestParam("env") Environment env, @RequestParam("topic") String topic) {
+    public List<TopicConfigValue> describeTopic(@RequestParam("env") String env, @RequestParam("topic") String topic) {
         return topicService.describeTopic(env, topic);
     }
 }

@@ -1,11 +1,11 @@
 package com.hoangdieuctu.tools.kafkas.service;
 
 import com.hoangdieuctu.tools.kafkas.manager.KafkaConnectorManager;
+import com.hoangdieuctu.tools.kafkas.messaging.WebsocketMessageSender;
 import com.hoangdieuctu.tools.kafkas.model.ConsumerKey;
 import com.hoangdieuctu.tools.kafkas.model.ConsumerOffset;
-import com.hoangdieuctu.tools.kafkas.model.Environment;
+import com.hoangdieuctu.tools.kafkas.model.EnvConfig;
 import com.hoangdieuctu.tools.kafkas.thread.ConsumerThread;
-import com.hoangdieuctu.tools.kafkas.messaging.WebsocketMessageSender;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +27,7 @@ public class ConsumerRunnerService {
     private WebsocketMessageSender wsMessageSender;
 
     private KafkaConsumer<String, String> getConsumerGroup(ConsumerKey consumerKey) {
-        Environment env = consumerKey.getEnv();
+        EnvConfig env = consumerKey.getEnv();
 
         return ConsumerOffset.latest.equals(consumerKey.getConsumerOffset()) ?
                 kafkaConnectorManager.getConsumer(env) :

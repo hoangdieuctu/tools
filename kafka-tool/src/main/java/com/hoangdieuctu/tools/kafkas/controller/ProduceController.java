@@ -30,20 +30,20 @@ public class ProduceController extends KafkaController {
 
     @ResponseBody
     @GetMapping("/topics")
-    public List<String> getTopic(@RequestParam("env") Environment env,
+    public List<String> getTopic(@RequestParam("env") String env,
                                  @RequestParam(value = "isFavOnly", required = false, defaultValue = "false") boolean isFavOnly) {
         return super.getTopics(env, isFavOnly);
     }
 
     @ResponseBody
     @GetMapping("/topic/details")
-    public List<PartitionData> getTopicDetail(@RequestParam("env") Environment env, @RequestParam("topicName") String topicName) {
+    public List<PartitionData> getTopicDetail(@RequestParam("env") String env, @RequestParam("topicName") String topicName) {
         return produceService.getTopicDetails(env, topicName);
     }
 
     @PostMapping
     @ResponseBody
-    public KafkaRecordData sendKafkaMsg(@RequestParam("env") Environment env,
+    public KafkaRecordData sendKafkaMsg(@RequestParam("env") String env,
                                         @RequestParam("topic") String topic,
                                         @RequestParam(value = "partition", required = false) Integer partition,
                                         @RequestBody String message,

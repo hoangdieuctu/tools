@@ -1,8 +1,9 @@
 package com.hoangdieuctu.tools.kafkas.service;
 
 import com.hoangdieuctu.tools.kafkas.model.ConsumerGroupDetail;
-import com.hoangdieuctu.tools.kafkas.model.Environment;
+import com.hoangdieuctu.tools.kafkas.model.EnvConfig;
 import com.hoangdieuctu.tools.kafkas.model.PartitionOffsets;
+import com.hoangdieuctu.tools.kafkas.util.EnvironmentHolder;
 import com.omarsmak.kafka.consumer.lag.monitoring.client.data.Lag;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.common.TopicPartition;
@@ -19,26 +20,29 @@ public class MonitorService {
     @Autowired
     private KafkaService kafkaService;
 
-    public List<String> getConsumerGroups(Environment env) {
-        List<String> groups = kafkaService.getConsumerGroups(env);
+    @Autowired
+    private EnvironmentHolder envsHolder;
+
+    public List<String> getConsumerGroups(String env) {
+        List<String> groups = kafkaService.getConsumerGroups(envsHolder.getEnv(env));
         groups.removeIf(i -> i.isEmpty());
 
         return groups;
     }
 
-    public ConsumerGroupDetail describeConsumerGroup(Environment env, String groupId) {
-        return kafkaService.describeConsumerGroup(env, groupId);
+    public ConsumerGroupDetail describeConsumerGroup(String env, String groupId) {
+        return kafkaService.describeConsumerGroup(envsHolder.getEnv(env), groupId);
     }
 
-    public Map<String, ConsumerGroupDetail> describeConsumerGroups(Environment env, List<String> groupIds) {
-        return kafkaService.describeConsumerGroups(env, groupIds);
+    public Map<String, ConsumerGroupDetail> describeConsumerGroups(String env, List<String> groupIds) {
+        return kafkaService.describeConsumerGroups(envsHolder.getEnv(env), groupIds);
     }
 
-    public Map<TopicPartition, PartitionOffsets> getConsumerGroupOffsets(Environment env, String topic, String groupId) {
+    public Map<TopicPartition, PartitionOffsets> getConsumerGroupOffsets(EnvConfig env, String topic, String groupId) {
         return kafkaService.getConsumerGroupOffsets(env, topic, groupId);
     }
 
-    public List<Lag> getConsumerLags(Environment env, String groupId) {
-        return kafkaService.getConsumerLags(env, groupId);
+    public List<Lag> getConsumerLags(String env, String groupId) {
+        return kafkaService.getConsumerLags(envsHolder.getEnv(env), groupId);
     }
 }

@@ -1,7 +1,6 @@
 package com.hoangdieuctu.tools.kafkas.controller;
 
 import com.hoangdieuctu.tools.kafkas.model.ConsumerKey;
-import com.hoangdieuctu.tools.kafkas.model.Environment;
 import com.hoangdieuctu.tools.kafkas.model.FavoriteTopicSetting;
 import com.hoangdieuctu.tools.kafkas.model.TopicExclusionSetting;
 import com.hoangdieuctu.tools.kafkas.service.AdminService;
@@ -94,7 +93,7 @@ public class AdminController {
 
     @ResponseBody
     @DeleteMapping("/consumer-group")
-    public void deleteConsumerGroup(@RequestParam("env") Environment env, @RequestParam("groupId") String groupId) {
+    public void deleteConsumerGroup(@RequestParam("env") String env, @RequestParam("groupId") String groupId) {
         adminService.deleteConsumerGroup(env, groupId);
     }
 }

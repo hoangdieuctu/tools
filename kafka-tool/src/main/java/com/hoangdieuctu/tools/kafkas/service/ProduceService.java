@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.hoangdieuctu.tools.kafkas.constant.Constants;
 import com.hoangdieuctu.tools.kafkas.model.*;
 import com.hoangdieuctu.tools.kafkas.repository.FileRepository;
+import com.hoangdieuctu.tools.kafkas.util.EnvironmentHolder;
 import com.hoangdieuctu.tools.kafkas.util.FileNameUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,9 +35,13 @@ public class ProduceService {
     @Autowired
     private FileRepository fileRepository;
 
-    public KafkaRecordData sendKafkaMsg(String host, Environment env, String topic, Integer partition, String message) {
+    @Autowired
+    private EnvironmentHolder envsHolder;
+
+    public KafkaRecordData sendKafkaMsg(String host, String env, String topic, Integer partition, String message) {
         log.info("Sending message to topic: {}", topic);
-        KafkaRecordData result = kafkaService.send(env, topic, partition, message);
+        EnvConfig config = envsHolder.getEnv(env);
+        KafkaRecordData result = kafkaService.send(config, topic, partition, message);
         try {
             return result;
         } finally {
@@ -183,7 +188,7 @@ public class ProduceService {
         return adminService.getStorageFolders();
     }
 
-    public List<PartitionData> getTopicDetails(Environment env, String topic) {
-        return kafkaService.getTopicDetails(env, topic);
+    public List<PartitionData> getTopicDetails(String env, String topic) {
+        return kafkaService.getTopicDetails(envsHolder.getEnv(env), topic);
     }
 }

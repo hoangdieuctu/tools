@@ -1,8 +1,6 @@
 package com.hoangdieuctu.tools.kafkas.repository;
 
 import lombok.extern.slf4j.Slf4j;
-import net.lingala.zip4j.ZipFile;
-import net.lingala.zip4j.exception.ZipException;
 import org.apache.commons.io.FileUtils;
 import org.springframework.stereotype.Component;
 
@@ -63,8 +61,4 @@ public class FileRepository {
         FileUtils.deleteQuietly(new File(path));
     }
 
-    public void zipFolder(String fileName, String folder) throws ZipException {
-        ZipFile zipFile = new ZipFile(fileName);
-        zipFile.addFolder(new File(folder));
-    }
 }

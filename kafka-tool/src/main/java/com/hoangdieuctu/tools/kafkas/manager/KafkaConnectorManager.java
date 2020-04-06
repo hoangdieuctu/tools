@@ -1,9 +1,10 @@
 package com.hoangdieuctu.tools.kafkas.manager;
 
 import com.hoangdieuctu.tools.kafkas.constant.Constants;
-import com.hoangdieuctu.tools.kafkas.model.Environment;
+import com.hoangdieuctu.tools.kafkas.model.EnvConfig;
 import com.hoangdieuctu.tools.kafkas.pool.AdminClientConnectionPoolWrapper;
 import com.hoangdieuctu.tools.kafkas.pool.ConsumerLagConnectionPoolWrapper;
+import com.hoangdieuctu.tools.kafkas.util.EnvironmentHolder;
 import com.omarsmak.kafka.consumer.lag.monitoring.client.KafkaConsumerLagClient;
 import com.omarsmak.kafka.consumer.lag.monitoring.client.KafkaConsumerLagClientFactory;
 import lombok.extern.slf4j.Slf4j;
@@ -15,15 +16,13 @@ import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.kafka.common.serialization.StringSerializer;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Set;
+import java.util.*;
 
 @Slf4j
 @Component
@@ -32,10 +31,10 @@ public class KafkaConnectorManager {
     private final String CONSUMER_GROUP = Constants.CONSUMER_GROUP_NAME;
     private final String PRODUCER_GROUP = Constants.PRODUCER_GROUP_NAME;
 
-    private Map<Environment, ConsumerLagConnectionPoolWrapper> consumerLagClients = new HashMap<>();
-    private Map<Environment, AdminClientConnectionPoolWrapper> clients = new HashMap<>();
+    private Map<EnvConfig, ConsumerLagConnectionPoolWrapper> consumerLagClients = new HashMap<>();
+    private Map<EnvConfig, AdminClientConnectionPoolWrapper> clients = new HashMap<>();
 
-    private Map<Environment, KafkaProducer<String, String>> producers = new HashMap<>();
+    private Map<EnvConfig, KafkaProducer<String, String>> producers = new HashMap<>();
 
     @Value("${max.kafka.admin.client.connection.pool}")
     private int maxKafkaAdminConnectionPoolSize;
@@ -43,13 +42,16 @@ public class KafkaConnectorManager {
     @Value("${max.kafka.consumer.lag.connection.pool}")
     private int maxConsumerLagConnectionPoolSize;
 
+    @Autowired
+    private EnvironmentHolder envsHolder;
+
     @PostConstruct
     public void init() {
         log.info("Init kafka producers, admin clients and consumer lag clients");
 
-        Environment[] envs = Environment.values();
-        for (Environment env : envs) {
-            KafkaProducer<String, String> producer = initKafkaProducer(env.getBootstrapServers(), env.name());
+        List<EnvConfig> envs = envsHolder.getConfigs();
+        for (EnvConfig env : envs) {
+            KafkaProducer<String, String> producer = initKafkaProducer(env.getBootstrapServer(), env.getName());
             producers.put(env, producer);
 
             AdminClientConnectionPoolWrapper adminClientPool = initAdminClientConnectionPool(env);
@@ -64,41 +66,41 @@ public class KafkaConnectorManager {
     @PreDestroy
     public void destroy() {
         log.info("Destroy kafka producers");
-        Set<Environment> producerKeys = producers.keySet();
+        Set<EnvConfig> producerKeys = producers.keySet();
         producerKeys.forEach(e -> producers.get(e).close());
 
         log.info("Destroy admin clients");
-        Set<Environment> adminClientKeys = clients.keySet();
+        Set<EnvConfig> adminClientKeys = clients.keySet();
         adminClientKeys.forEach(a -> clients.get(a).close());
 
         log.info("Destroy consumer lag clients");
-        Set<Environment> lagClients = consumerLagClients.keySet();
+        Set<EnvConfig> lagClients = consumerLagClients.keySet();
         lagClients.forEach(l -> consumerLagClients.get(l).close());
     }
 
-    private ConsumerLagConnectionPoolWrapper initKafkaConsumerLagConnectionPool(Environment env) {
+    private ConsumerLagConnectionPoolWrapper initKafkaConsumerLagConnectionPool(EnvConfig env) {
         log.info("Init kafka consumer lag client connection pool ({}): {}", env, maxConsumerLagConnectionPoolSize);
         ConsumerLagConnectionPoolWrapper pool = new ConsumerLagConnectionPoolWrapper(maxConsumerLagConnectionPoolSize);
         for (int i = 0; i < maxConsumerLagConnectionPoolSize; i++) {
-            KafkaConsumerLagClient connection = initConsumerLagClient(env.getBootstrapServers());
+            KafkaConsumerLagClient connection = initConsumerLagClient(env.getBootstrapServer());
             pool.offer(connection);
         }
 
         return pool;
     }
 
-    private AdminClientConnectionPoolWrapper initAdminClientConnectionPool(Environment env) {
+    private AdminClientConnectionPoolWrapper initAdminClientConnectionPool(EnvConfig env) {
         log.info("Init admin client connection pool ({}): {}", env, maxKafkaAdminConnectionPoolSize);
         AdminClientConnectionPoolWrapper pool = new AdminClientConnectionPoolWrapper(maxKafkaAdminConnectionPoolSize);
         for (int i = 0; i < maxKafkaAdminConnectionPoolSize; i++) {
-            AdminClient connection = initKafkaAdminClient(env.getBootstrapServers());
+            AdminClient connection = initKafkaAdminClient(env.getBootstrapServer());
             pool.offer(connection);
         }
 
         return pool;
     }
 
-    public ConsumerLagConnectionPoolWrapper getConsumerLagClient(Environment env) {
+    public ConsumerLagConnectionPoolWrapper getConsumerLagClient(EnvConfig env) {
         return consumerLagClients.get(env);
     }
 
@@ -110,19 +112,19 @@ public class KafkaConnectorManager {
         return consumerLagClient;
     }
 
-    public KafkaConsumer<String, String> getConsumer(Environment env) {
-        return initKafkaConsumer(env.getBootstrapServers());
+    public KafkaConsumer<String, String> getConsumer(EnvConfig env) {
+        return initKafkaConsumer(env.getBootstrapServer());
     }
 
-    public KafkaConsumer<String, String> getConsumer(Environment env, String groupId) {
-        return initKafkaConsumer(env.getBootstrapServers(), groupId);
+    public KafkaConsumer<String, String> getConsumer(EnvConfig env, String groupId) {
+        return initKafkaConsumer(env.getBootstrapServer(), groupId);
     }
 
-    public KafkaProducer<String, String> getProducer(Environment env) {
+    public KafkaProducer<String, String> getProducer(EnvConfig env) {
         return producers.get(env);
     }
 
-    public AdminClientConnectionPoolWrapper getAdminClient(Environment env) {
+    public AdminClientConnectionPoolWrapper getAdminClient(EnvConfig env) {
         return clients.get(env);
     }
 
