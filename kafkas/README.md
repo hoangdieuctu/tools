@@ -55,6 +55,3 @@ View details of a topic.
 ![picture](topic-detail.png)
 6. Admin page
 ![picture](admin.png)
-
-### Donate ###
-https://www.patreon.com/hoangdieuctu
