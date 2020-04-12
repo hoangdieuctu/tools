@@ -9,6 +9,10 @@
             overflow-x: hidden;
         }
 
+        #clear {
+            margin-left: 20px;
+        }
+
         #pods {
             line-height: 30px;
         }
@@ -66,6 +70,7 @@
                     </div>
                     <button id="connect" class="btn btn-sm btn-primary">Connect</button>
                     <button id="disconnect" class="btn btn-sm btn-danger">Disconnect</button>
+                    <button id="clear" class="btn btn-sm btn-secondary">Clear</button>
                 </div>
             </div>
         </div>
@@ -95,12 +100,15 @@
         });
 
         $('#connect').click(function() {
-            clear();
             connect();
         });
 
         $('#disconnect').click(function() {
             disconnect();
+        });
+
+        $('#clear').click(function() {
+            clear();
         });
     });
 
@@ -123,6 +131,7 @@
 
     function clear() {
         $('.data-content').remove();
+        currMsg = 0;
     }
 
     function connect() {
