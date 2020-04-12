@@ -99,7 +99,7 @@
 
 <script>
     var currMsg = 0;
-    var maxMsg = 500;
+    var maxMsg = 250;
     var socket, stomp;
     $(document).ready(function () {
         showConnect();
