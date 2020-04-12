@@ -29,9 +29,18 @@ public class LogService {
     @Autowired
     private ApiClient apiClient;
 
+    @Autowired
+    private WSSenderService wsSenderService;
+
     private Map<String, WebSocket> sockets = new HashMap<>();
 
-    public void connect(String session, String pod) throws ApiException {
+    public void connect(String pod) throws ApiException {
+        if (sockets.containsKey(pod)) {
+            logger.info("The connection to pod [{}] is already existed", pod);
+            return;
+        }
+
+        logger.info("Open new connection to pod: {}", pod);
         String container = PodNameUtil.getContainerName(pod);
         String path = Constants.K8S_URL.replace("${pod}", pod).replace("${container}", container);
 
@@ -53,6 +62,8 @@ public class LogService {
                     String message = IOUtils.toString(is);
                     if (StringUtils.isNotEmpty(message.trim())) {
                         logger.info("Received: {}", message);
+
+                        wsSenderService.send(pod, message);
                     }
                 } catch (IOException e) {
                     logger.error("Error while reading from stream. ", e);
@@ -70,14 +81,13 @@ public class LogService {
             }
         }));
 
-        this.sockets.put(session, socket);
+        this.sockets.put(pod, socket);
         logger.info("A new socket is opened, size: {}", this.sockets.size());
     }
 
-    public void close(String session) {
-        WebSocket socket = sockets.remove(session);
+    public void close(String pod) {
+        WebSocket socket = sockets.remove(pod);
         if (socket != null) {
-            logger.info("A socket was closed: {}", session);
             socket.close(Constants.SOCKET_CLOSE_CODE, Constants.SOCKET_CLOSE_MESSAGE);
         }
     }

@@ -11,4 +11,7 @@ public class Constants {
 
     public static final Integer SOCKET_CLOSE_CODE = 3000;
     public static final String SOCKET_CLOSE_MESSAGE = "Normal closed.";
+
+    public static final String SPLASH = "/";
+    public static final String TOPIC_PREFIX = "/topic/";
 }
