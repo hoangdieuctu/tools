@@ -26,7 +26,7 @@ public class PodRepository {
     public List<V1Pod> getDefaultPods() throws ApiException {
         List<V1Pod> pods = getAllPods();
         return pods.stream()
-                .filter(pod -> Constants.DEFAULT_NAMESPACE.equals(PodNameUtil.getPodName(pod)))
+                .filter(pod -> Constants.DEFAULT_NAMESPACE.equals(pod.getMetadata().getNamespace()))
                 .collect(Collectors.toList());
     }
 }

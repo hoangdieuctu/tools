@@ -1,12 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <head>
     <title>KLogs</title>
     <style>
         #content {
             overflow-x: hidden;
+        }
+
+        #pods {
+            line-height: 30px;
         }
 
         #data-parent {
@@ -32,6 +36,18 @@
         .data-content:hover {
             background: #eaecf4;
         }
+
+        .select2-selection__rendered {
+            line-height: 30px !important;
+        }
+
+        .select2-container .select2-selection--single {
+            height: 32px !important;
+        }
+
+        .select2-selection__arrow {
+            height: 30px !important;
+        }
     </style>
 </head>
 
@@ -39,14 +55,31 @@
 <div id="content" class="content">
     <div class="row">
         <div class="col-xl-12 col-lg-12 col-md-12">
+            <div class="pods-parent">
+                <div class="row">
+                    <div class="col-xl-4 col-lg-4 col-md-4">
+                        <select id="pods">
+                            <c:forEach items="${pods}" var="pod">
+                                <option value="${pod}">${pod}</option>
+                            </c:forEach>
+                        </select>
+                    </div>
+                    <button id="connect" class="btn btn-sm btn-primary">Connect</button>
+                    <button id="disconnect" class="btn btn-sm btn-danger">Disconnect</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-12 col-lg-12 col-md-12">
             <div id="data-parent"></div>
         </div>
     </div>
 </div>
 
 <link href="/resources/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+<link href="/resources/css/select2.min.css" rel="stylesheet" type="text/css">
 
 <script src="/resources/js/jquery.min.js"></script>
+<script src="/resources/js/select2.min.js"></script>
 <script src="/resources/js/sockjs.min.js"></script>
 <script src="/resources/js/stomp.min.js"></script>
 
@@ -54,18 +87,47 @@
     var currMsg = 0;
     var maxMsg = 500;
     var socket, stomp;
-    var pod = 'ridershipmonitoringprocessor-7b47d6d8b4-sm2zc';
     $(document).ready(function () {
-        connect();
+        showConnect();
+
+        $('#pods').select2({
+            width: '100%'
+        });
+
+        $('#connect').click(function() {
+            connect();
+        });
+
+        $('#disconnect').click(function() {
+            disconnect();
+        });
     });
 
+    function showConnect() {
+        $('#pods').prop('disabled', false);
+        $('#connect').show();
+        $('#disconnect').hide();
+    }
+
+    function showDisconnect() {
+        $('#pods').prop('disabled', true);
+        $('#disconnect').show();
+        $('#connect').hide();
+    }
+
+    function disconnect() {
+        showConnect();
+        socket.close();
+    }
 
     function connect() {
-        socket = new SockJS('http://localhost:8080/ws');
+        showDisconnect();
+
+        socket = new SockJS('/ws');
         stomp = Stomp.over(socket);
 
         stomp.connect({}, function () {
-            stomp.subscribe('/topic/' + pod, function (message) {
+            stomp.subscribe('/topic/' + $('#pods').val(), function (message) {
                 var html = '<div class="data-content">' + currMsg + '.' + message.body + '</html>';
                 $('#data-parent').prepend(html);
                 if (currMsg >= maxMsg) {
@@ -75,6 +137,7 @@
             });
         }, function (error) {
             console.log('Error: ' + error);
+            showConnect();
         });
     }
 </script>

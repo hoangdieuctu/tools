@@ -14,4 +14,6 @@ public class Constants {
 
     public static final String SPLASH = "/";
     public static final String TOPIC_PREFIX = "/topic/";
+
+    public static final String POD_RUNNING_STATE = "Running";
 }
