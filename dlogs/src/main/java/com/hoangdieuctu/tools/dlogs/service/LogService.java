@@ -61,8 +61,6 @@ public class LogService {
                 try {
                     String message = IOUtils.toString(is);
                     if (StringUtils.isNotEmpty(message.trim())) {
-                        logger.info("Received: {}", message);
-
                         wsSenderService.send(pod, message);
                     }
                 } catch (IOException e) {
