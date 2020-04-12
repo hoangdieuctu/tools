@@ -11,7 +11,7 @@
     <groupId>com.hoangdieuctu.tools</groupId>
     <artifactId>dlogs</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>dlogs</name>
+    <name>klogs</name>
     <description>Tailing logs from Kubernetes</description>
 
     <properties>

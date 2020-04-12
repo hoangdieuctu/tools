@@ -1,4 +1,4 @@
-package com.hoangdieuctu.tools.dlogs.config;
+package com.hoangdieuctu.tools.klogs.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;

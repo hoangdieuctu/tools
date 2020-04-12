@@ -1,6 +1,6 @@
-package com.hoangdieuctu.tools.dlogs.config;
+package com.hoangdieuctu.tools.klogs.config;
 
-import com.hoangdieuctu.tools.dlogs.constant.Constants;
+import com.hoangdieuctu.tools.klogs.constant.Constants;
 import io.kubernetes.client.openapi.ApiClient;
 import io.kubernetes.client.openapi.apis.CoreV1Api;
 import io.kubernetes.client.util.ClientBuilder;

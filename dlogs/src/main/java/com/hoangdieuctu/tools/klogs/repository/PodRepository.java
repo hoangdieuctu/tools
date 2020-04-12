@@ -1,7 +1,6 @@
-package com.hoangdieuctu.tools.dlogs.repository;
+package com.hoangdieuctu.tools.klogs.repository;
 
-import com.hoangdieuctu.tools.dlogs.constant.Constants;
-import com.hoangdieuctu.tools.dlogs.util.PodNameUtil;
+import com.hoangdieuctu.tools.klogs.constant.Constants;
 import io.kubernetes.client.openapi.ApiException;
 import io.kubernetes.client.openapi.apis.CoreV1Api;
 import io.kubernetes.client.openapi.models.V1Pod;

@@ -1,7 +1,7 @@
-package com.hoangdieuctu.tools.dlogs.service;
+package com.hoangdieuctu.tools.klogs.service;
 
-import com.hoangdieuctu.tools.dlogs.constant.Constants;
-import com.hoangdieuctu.tools.dlogs.repository.PodRepository;
+import com.hoangdieuctu.tools.klogs.constant.Constants;
+import com.hoangdieuctu.tools.klogs.repository.PodRepository;
 import io.kubernetes.client.openapi.ApiException;
 import io.kubernetes.client.openapi.models.V1Pod;
 import org.springframework.beans.factory.annotation.Autowired;

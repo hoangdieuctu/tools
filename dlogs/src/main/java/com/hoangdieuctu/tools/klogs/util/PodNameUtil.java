@@ -1,6 +1,6 @@
-package com.hoangdieuctu.tools.dlogs.util;
+package com.hoangdieuctu.tools.klogs.util;
 
-import com.hoangdieuctu.tools.dlogs.constant.Constants;
+import com.hoangdieuctu.tools.klogs.constant.Constants;
 import io.kubernetes.client.openapi.models.V1Pod;
 
 public class PodNameUtil {

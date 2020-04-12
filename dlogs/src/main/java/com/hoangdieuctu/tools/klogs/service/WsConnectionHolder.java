@@ -1,4 +1,4 @@
-package com.hoangdieuctu.tools.dlogs.service;
+package com.hoangdieuctu.tools.klogs.service;
 
 import io.kubernetes.client.openapi.ApiException;
 import org.slf4j.Logger;

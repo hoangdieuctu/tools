@@ -1,4 +1,4 @@
-package com.hoangdieuctu.tools.dlogs.constant;
+package com.hoangdieuctu.tools.klogs.constant;
 
 public class Constants {
     public static final String CONFIG_FILE = "/Users/hoangdieuctu/.kube/config";

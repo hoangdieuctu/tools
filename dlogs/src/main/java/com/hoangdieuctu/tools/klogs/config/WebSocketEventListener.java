@@ -1,7 +1,7 @@
-package com.hoangdieuctu.tools.dlogs.config;
+package com.hoangdieuctu.tools.klogs.config;
 
-import com.hoangdieuctu.tools.dlogs.constant.Constants;
-import com.hoangdieuctu.tools.dlogs.service.WsConnectionHolder;
+import com.hoangdieuctu.tools.klogs.constant.Constants;
+import com.hoangdieuctu.tools.klogs.service.WsConnectionHolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
