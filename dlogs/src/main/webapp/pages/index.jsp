@@ -69,7 +69,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-xl-12 col-lg-12 col-md-12">
+        <div class="col-xl-12 col-lg-12 col-md-12 pt-3">
             <div id="data-parent"></div>
         </div>
     </div>
@@ -95,6 +95,7 @@
         });
 
         $('#connect').click(function() {
+            clear();
             connect();
         });
 
@@ -120,6 +121,10 @@
         socket.close();
     }
 
+    function clear() {
+        $('.data-content').remove();
+    }
+
     function connect() {
         showDisconnect();
 
@@ -128,7 +133,7 @@
 
         stomp.connect({}, function () {
             stomp.subscribe('/topic/' + $('#pods').val(), function (message) {
-                var html = '<div class="data-content">' + currMsg + '.' + message.body + '</html>';
+                var html = '<div class="data-content"><span class="badge badge-info">' + currMsg + '</span>' + message.body + '</div>';
                 $('#data-parent').prepend(html);
                 if (currMsg >= maxMsg) {
                     $('.data-content').last().remove();
