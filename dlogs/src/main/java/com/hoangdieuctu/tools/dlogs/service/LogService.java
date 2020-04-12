@@ -33,6 +33,7 @@ public class LogService {
     private WSSenderService wsSenderService;
 
     private Map<String, WebSocket> sockets = new HashMap<>();
+    private Map<WebSocket, String> sessions = new HashMap<>();
 
     public void connect(String pod) throws ApiException {
         if (sockets.containsKey(pod)) {
@@ -46,13 +47,18 @@ public class LogService {
 
         Request request = buildRequest(path);
         WebSocket socket = apiClient.getHttpClient().newWebSocket(request, new WebSockets.Listener(new WebSockets.SocketListener() {
+
+            private WebSocket socket;
+
             @Override
             public void open(String protocol, WebSocket socket) {
+                this.socket = socket;
                 logger.info("Socket opened");
             }
 
             @Override
             public void close() {
+                LogService.this.close(socket);
                 logger.info("Socket closed");
             }
 
@@ -79,14 +85,23 @@ public class LogService {
             }
         }));
 
-        this.sockets.put(pod, socket);
-        logger.info("A new socket is opened, size: {}", this.sockets.size());
+        sockets.put(pod, socket);
+        sessions.put(socket, pod);
+        logger.info("A new socket is opened, size: {}", sockets.size());
     }
 
     public void close(String pod) {
         WebSocket socket = sockets.remove(pod);
         if (socket != null) {
+            sessions.remove(socket);
             socket.close(Constants.SOCKET_CLOSE_CODE, Constants.SOCKET_CLOSE_MESSAGE);
+        }
+    }
+
+    public void close(WebSocket socket) {
+        String session = sessions.remove(socket);
+        if (session != null) {
+            sockets.remove(session);
         }
     }
 
