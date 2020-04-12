@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.hoangdieuctu.tools</groupId>
-    <artifactId>dlogs</artifactId>
+    <artifactId>klogs</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>klogs</name>
     <description>Tailing logs from Kubernetes</description>
