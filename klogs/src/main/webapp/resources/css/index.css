@@ -1,0 +1,85 @@
+#content {
+    overflow-x: hidden;
+}
+
+#clear {
+    margin-left: 20px;
+}
+
+#pods {
+    line-height: 30px;
+}
+
+.pods-parent {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    background: white;
+    padding: 10px;
+}
+
+#data-parent {
+    background: white;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.data-content {
+    box-sizing: border-box;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    margin: 0 0 1px 0;
+    overflow: visible;
+    font-family: monaco, menlo, consolas, 'courier prime', courier, 'courier new', monospace;
+    font-size: 12px;
+    word-wrap: break-word;
+    width: 100%;
+    height: 100%;
+    border-radius: .25rem;
+    border-color: #aaa;
+}
+
+.data-content:hover {
+    background: #eaecf4;
+}
+
+.select2-selection__rendered {
+    line-height: 30px !important;
+}
+
+.select2-container .select2-selection--single {
+    height: 32px !important;
+}
+
+.select2-selection__arrow {
+    height: 30px !important;
+}
+
+.time {
+    color: #2b4dff;
+}
+
+.pid {
+    color: #e91ee4;
+}
+
+._class {
+    color: #2b4dff;
+}
+
+.method {
+    color: #e91ee4;
+}
+
+.level {
+    color: #2ddc44
+}
+
+.level_WARN {
+    color: #f07c11 !important;
+}
+
+.level_ERROR {
+    color: red !important;
+}
