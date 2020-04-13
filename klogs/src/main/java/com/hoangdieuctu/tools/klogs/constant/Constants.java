@@ -1,7 +1,7 @@
 package com.hoangdieuctu.tools.klogs.constant;
 
 public class Constants {
-    public static final String CONFIG_FILE = "/Users/hoangdieuctu/.kube/config";
+    public static final String CONFIG_FILE = ".kube/config";
 
     public static final String K8S_URL = "/api/v1/namespaces/default/pods/${pod}/attach?stdout=true&container=${container}";
 

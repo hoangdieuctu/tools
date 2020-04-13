@@ -1,0 +1,1 @@
+docker run -p 10100:8080 -d --name klogs -v /Users/hoangdieuctu/.kube/config:/root/.kube/config klogs

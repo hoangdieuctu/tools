@@ -20,7 +20,8 @@ public class KubernetesConfig {
 
     @Bean
     public ApiClient apiClient() throws IOException {
-        return isInClusterMode ? ClientBuilder.cluster().build() : ClientBuilder.kubeconfig(KubeConfig.loadKubeConfig(new FileReader(Constants.CONFIG_FILE))).build();
+        String configPath = System.getProperty("user.home") + "/" + Constants.CONFIG_FILE;
+        return isInClusterMode ? ClientBuilder.cluster().build() : ClientBuilder.kubeconfig(KubeConfig.loadKubeConfig(new FileReader(configPath))).build();
     }
 
     @Bean
