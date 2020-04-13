@@ -4,7 +4,7 @@
 
 <head>
     <title>KLogs</title>
-    <link rel='shortcut icon' href="/resources/images/logo.png" type='image/png' />
+    <link rel='shortcut icon' href="/resources/images/logo.png" type='image/png'/>
     <style>
         #content {
             overflow-x: hidden;
@@ -114,22 +114,32 @@
             width: '100%'
         });
 
-        $('#connect').click(function() {
+        $('#connect').click(function () {
             connect();
         });
 
-        $('#disconnect').click(function() {
+        $('#disconnect').click(function () {
             disconnect();
         });
 
-        $('#clear').click(function() {
+        $('#clear').click(function () {
             clear();
         });
 
-        $('#refresh').click(function() {
-           window.location = '/cache/flush';
+        $('#refresh').click(function () {
+            refresh();
         });
     });
+
+    function refresh() {
+        $.get("/cache/flush", function () {
+            refreshPage();
+        });
+    }
+
+    function refreshPage() {
+        window.location.reload(false);
+    }
 
     function showConnect() {
         $('#pods').prop('disabled', false);
@@ -158,18 +168,15 @@
 
         socket = new SockJS('/ws');
         stomp = Stomp.over(socket);
-
         stomp.connect({}, function () {
             stomp.subscribe('/topic/' + $('#pods').val(), function (message) {
                 var html = '<div class="data-content">' + message.body + '</div>';
                 $('#data-parent').prepend(html);
-                if (currMsg >= maxMsg) {
+                if (++currMsg > maxMsg) {
                     $('.data-content').last().remove();
                 }
-                currMsg++;
             });
-        }, function (error) {
-            console.log('Error: ' + error);
+        }, function () {
             showConnect();
         });
     }

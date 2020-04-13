@@ -15,8 +15,8 @@ public class CacheController {
     private CacheService cacheService;
 
     @GetMapping("/flush")
-    public String flush() {
+    @ResponseBody
+    public void flush() {
         cacheService.flush();
-        return "redirect:/";
     }
 }
