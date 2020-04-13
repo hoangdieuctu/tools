@@ -62,6 +62,26 @@
         .select2-selection__arrow {
             height: 30px !important;
         }
+
+        .pid {
+            color: #e945df;
+        }
+
+        ._class {
+            color: #008684;
+        }
+
+        .level {
+            color: #2ddc44
+        }
+
+        .level_WARN {
+            color: lightcoral !important;
+        }
+
+        .level_ERROR {
+            color: red !important;
+        }
     </style>
 </head>
 
@@ -157,7 +177,7 @@
         stomp.connect({}, function () {
             showDisconnect();
             stomp.subscribe('/topic/' + $('#pods').val(), function (message) {
-                var html = '<div class="data-content">' + message.body + '</div>';
+                var html = '<div class="data-content">'+message.body+'</div>';
                 $('#data-parent').prepend(html);
                 if (++currMsg > maxMsg) {
                     $('.data-content').last().remove();

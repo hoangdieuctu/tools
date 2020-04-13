@@ -32,6 +32,9 @@ public class LogService {
     @Autowired
     private WSSenderService wsSenderService;
 
+    @Autowired
+    private LogFormatterService logFormatterService;
+
     private Map<String, WebSocket> sockets = new HashMap<>();
     private Map<WebSocket, String> sessions = new HashMap<>();
 
@@ -68,7 +71,7 @@ public class LogService {
                 try {
                     String message = IOUtils.toString(is);
                     if (StringUtils.isNotEmpty(message.trim())) {
-                        wsSenderService.send(pod, message);
+                        wsSenderService.send(pod, logFormatterService.format(message));
                     }
                 } catch (IOException e) {
                     logger.error("Error while reading from stream. ", e.getMessage());
