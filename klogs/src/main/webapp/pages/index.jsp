@@ -83,7 +83,6 @@
                         <button id="disconnect" class="btn btn-sm btn-danger">Disconnect</button>
                     </div>
                     <div class="col-xl-4 col-lg-4 col-md-4" style="text-align: right">
-                        <button id="refresh" class="btn btn-sm btn-secondary">Refresh</button>
                         <button id="clear" class="btn btn-sm btn-secondary">Clear</button>
                     </div>
                 </div>
@@ -125,21 +124,7 @@
         $('#clear').click(function () {
             clear();
         });
-
-        $('#refresh').click(function () {
-            refresh();
-        });
     });
-
-    function refresh() {
-        $.get("/cache/flush", function () {
-            refreshPage();
-        });
-    }
-
-    function refreshPage() {
-        window.location.reload(false);
-    }
 
     function showConnect() {
         $('#pods').prop('disabled', false);
@@ -154,21 +139,23 @@
     }
 
     function disconnect() {
-        showConnect();
         socket.close();
     }
 
     function clear() {
-        $('.data-content').remove();
+        removeContents();
         currMsg = 0;
     }
 
-    function connect() {
-        showDisconnect();
+    function removeContents() {
+        $('.data-content').remove();
+    }
 
+    function connect() {
         socket = new SockJS('/ws');
         stomp = Stomp.over(socket);
         stomp.connect({}, function () {
+            showDisconnect();
             stomp.subscribe('/topic/' + $('#pods').val(), function (message) {
                 var html = '<div class="data-content">' + message.body + '</div>';
                 $('#data-parent').prepend(html);
