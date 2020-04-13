@@ -11,6 +11,7 @@
     <groupId>com.hoangdieuctu.tools</groupId>
     <artifactId>klogs</artifactId>
     <version>0.0.1-SNAPSHOT</version>
+    <packaging>war</packaging>
     <name>klogs</name>
     <description>Tailing logs from Kubernetes</description>
 
