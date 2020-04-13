@@ -24,6 +24,7 @@
             width: 100%;
             z-index: 1000;
             background: white;
+            padding: 10px;
         }
 
         #data-parent {
@@ -77,13 +78,18 @@
                             </c:forEach>
                         </select>
                     </div>
-                    <button id="connect" class="btn btn-sm btn-primary">Connect</button>
-                    <button id="disconnect" class="btn btn-sm btn-danger">Disconnect</button>
-                    <button id="clear" class="btn btn-sm btn-secondary">Clear</button>
+                    <div class="col-xl-4 col-lg-4 col-md-4">
+                        <button id="connect" class="btn btn-sm btn-primary">Connect</button>
+                        <button id="disconnect" class="btn btn-sm btn-danger">Disconnect</button>
+                    </div>
+                    <div class="col-xl-4 col-lg-4 col-md-4" style="text-align: right">
+                        <button id="refresh" class="btn btn-sm btn-secondary">Refresh</button>
+                        <button id="clear" class="btn btn-sm btn-secondary">Clear</button>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="col-xl-12 col-lg-12 col-md-12" style="padding-top: 40px">
+        <div class="col-xl-12 col-lg-12 col-md-12" style="padding-top: 50px">
             <div id="data-parent"></div>
         </div>
     </div>
@@ -118,6 +124,10 @@
 
         $('#clear').click(function() {
             clear();
+        });
+
+        $('#refresh').click(function() {
+           window.location = '/cache/flush';
         });
     });
 
