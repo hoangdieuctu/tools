@@ -151,7 +151,7 @@
 
         stomp.connect({}, function () {
             stomp.subscribe('/topic/' + $('#pods').val(), function (message) {
-                var html = '<div class="data-content"><span class="badge badge-secondary">' + currMsg + '</span>' + message.body + '</div>';
+                var html = '<div class="data-content">' + message.body + '</div>';
                 $('#data-parent').prepend(html);
                 if (currMsg >= maxMsg) {
                     $('.data-content').last().remove();
