@@ -48,18 +48,19 @@ public class LogService {
         Request request = buildRequest(path);
         WebSocket socket = apiClient.getHttpClient().newWebSocket(request, new WebSockets.Listener(new WebSockets.SocketListener() {
 
+            private boolean failure = false;
             private WebSocket socket;
 
             @Override
             public void open(String protocol, WebSocket socket) {
-                this.socket = socket;
                 logger.info("Socket opened");
+                this.socket = socket;
             }
 
             @Override
             public void close() {
-                LogService.this.close(socket);
                 logger.info("Socket closed");
+                LogService.this.close(socket, failure);
             }
 
             @Override
@@ -70,18 +71,19 @@ public class LogService {
                         wsSenderService.send(pod, message);
                     }
                 } catch (IOException e) {
-                    logger.error("Error while reading from stream. ", e);
+                    logger.error("Error while reading from stream. ", e.getMessage());
                 }
             }
 
             @Override
             public void failure(Throwable t) {
-                logger.info("Connect failed. ", t);
+                logger.info("Failure, something went wrong on the connection, closing the socket");
+                this.failure = true;
             }
 
             @Override
             public void textMessage(Reader in) {
-                logger.info("Receive text message");
+                logger.info("Receive text message but ignore");
             }
         }));
 
@@ -98,7 +100,8 @@ public class LogService {
         }
     }
 
-    public void close(WebSocket socket) {
+    public void close(WebSocket socket, boolean failure) {
+        logger.info("Close socket, failure state: {}", failure);
         String session = sessions.remove(socket);
         if (session != null) {
             sockets.remove(session);
@@ -111,10 +114,10 @@ public class LogService {
         headers.put("Sec-WebSocket-Protocol", "v4.channel.k8s.io");
         headers.put("Connection", "Upgrade");
         headers.put("Upgrade", "SPDY/3.1");
-        String[] localVarAuthNames = new String[]{"BearerToken"};
+        String[] auth = new String[]{"BearerToken"};
         return apiClient.buildRequest(path, "GET",
-                Collections.emptyList(), Collections.emptyList(), null,
-                headers, new HashMap<>(), new HashMap<>(),
-                localVarAuthNames, null);
+                Collections.emptyList(), Collections.emptyList(),
+                null, headers, new HashMap<>(),
+                new HashMap<>(), auth, null);
     }
 }
