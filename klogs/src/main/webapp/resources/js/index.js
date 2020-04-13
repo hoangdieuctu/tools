@@ -21,10 +21,6 @@ $(document).ready(function () {
     });
 });
 
-function hideDateTime() {
-    $('.time').css('display', 'none');
-}
-
 function showConnect() {
     $('#pods').prop('disabled', false);
     $('#connect').show();
