@@ -9,7 +9,9 @@ import java.util.regex.Pattern;
 public class LogFormatterService {
 
     private static final String SPACE = " ";
-    private static final String LOG_PATTERN = "(\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}.\\d{3})  (\\w+) (\\w+) (---) \\[(.+)\\](.+)::(.+)";
+
+    // time, level, pid, symbol, thread, class, label, method, content
+    private static final String LOG_PATTERN = "(\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}.\\d{3})  ([A-Z]+) (\\d+) (---) (\\[.+\\]) (.+)(::)([a-zA-Z0-9_]+)(.+)";
 
     private Pattern pattern = Pattern.compile(LOG_PATTERN);
 
@@ -25,17 +27,20 @@ public class LogFormatterService {
         String symbol = matcher.group(4);
         String thread = matcher.group(5);
         String _class = matcher.group(6);
-        String rest = matcher.group(7);
+        String label = matcher.group(7);
+        String method = matcher.group(8);
+        String content = matcher.group(9);
 
         StringBuilder builder = new StringBuilder();
         builder.append(buildSpan(time, "time")).append(SPACE);
         builder.append(buildSpan(level, "level level_" + level)).append(SPACE);
         builder.append(buildSpan(pid, "pid")).append(SPACE);
         builder.append(buildSpan(symbol, "symbol")).append(SPACE);
-        builder.append(buildSpan("[" + thread + "]", "thread")).append(SPACE);
+        builder.append(buildSpan(thread, "thread")).append(SPACE);
         builder.append(buildSpan(_class, "_class"));
-        builder.append(buildSpan("::", "determine"));
-        builder.append(buildSpan(rest, "rest"));
+        builder.append(buildSpan(label, "label"));
+        builder.append(buildSpan(method, "method")).append(SPACE);
+        builder.append(buildSpan(content, "content"));
 
         return builder.toString();
     }

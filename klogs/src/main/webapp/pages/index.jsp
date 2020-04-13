@@ -35,7 +35,8 @@
 
         .data-content {
             box-sizing: border-box;
-            padding-bottom: 15px;
+            padding-top: 5px;
+            padding-bottom: 5px;
             margin: 0 0 1px 0;
             overflow: visible;
             font-family: monaco, menlo, consolas, 'courier prime', courier, 'courier new', monospace;
@@ -64,11 +65,15 @@
         }
 
         .pid {
-            color: #e945df;
+            color: #e91ee4;
         }
 
         ._class {
-            color: #008684;
+            color: #2b4dff;
+        }
+
+        .method {
+            color: #e91ee4;
         }
 
         .level {
@@ -76,7 +81,7 @@
         }
 
         .level_WARN {
-            color: lightcoral !important;
+            color: #f07c11 !important;
         }
 
         .level_ERROR {

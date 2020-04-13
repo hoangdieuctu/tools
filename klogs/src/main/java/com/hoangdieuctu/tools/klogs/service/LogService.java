@@ -71,7 +71,7 @@ public class LogService {
                 try {
                     String message = IOUtils.toString(is);
                     if (StringUtils.isNotEmpty(message.trim())) {
-                        wsSenderService.send(pod, logFormatterService.format(message));
+                        wsSenderService.send(pod, logFormatterService.format(message.trim()));
                     }
                 } catch (IOException e) {
                     logger.error("Error while reading from stream. ", e.getMessage());
@@ -92,7 +92,7 @@ public class LogService {
 
         sockets.put(pod, socket);
         sessions.put(socket, pod);
-        logger.info("A new socket is opened, size: {}", sockets.size());
+        logger.info("A new socket is opened, total: {}", sockets.size());
     }
 
     public void close(String pod) {
