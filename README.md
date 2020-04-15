@@ -11,3 +11,6 @@ The tools will be installed by docker
 
 ## kafkas ##
 The powerful tool that help to interact with kafka such as: consume data, produce message, monitor consumer lag...
+
+## klogs ##
+The alternative UI tool for **kubectl log -f pod**
