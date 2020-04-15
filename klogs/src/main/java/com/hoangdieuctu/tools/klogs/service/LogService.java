@@ -19,6 +19,7 @@ import java.io.InputStream;
 import java.io.Reader;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -70,8 +71,10 @@ public class LogService {
             public void bytesMessage(InputStream is) {
                 try {
                     String message = IOUtils.toString(is);
-                    if (StringUtils.isNotEmpty(message.trim())) {
-                        wsSenderService.send(pod, logFormatterService.format(message.trim()));
+                    String trimText = message.trim();
+                    if (StringUtils.isNotEmpty(trimText)) {
+                        List<String> lines = logFormatterService.format(trimText);
+                        lines.forEach(line -> wsSenderService.send(pod, line));
                     }
                 } catch (IOException e) {
                     logger.error("Error while reading from stream. ", e.getMessage());
@@ -80,7 +83,7 @@ public class LogService {
 
             @Override
             public void failure(Throwable t) {
-                logger.info("Failure, something went wrong on the connection, closing the socket");
+                logger.info("Failure, something went wrong on the connection, closing the socket. ");
                 this.failure = true;
             }
 

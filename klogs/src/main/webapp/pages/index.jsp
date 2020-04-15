@@ -9,6 +9,10 @@
 
 <body id="page-top">
 <div id="content" class="content">
+    <div id="loading-parent"></div>
+    <div id="loading" class="spinner-border text-primary" role="status">
+        <span class="sr-only">Loading...</span>
+    </div>
     <div class="row">
         <div class="col-xl-12 col-lg-12 col-md-12">
             <div class="pods-parent">
@@ -39,14 +43,14 @@
 <link href="/resources/css/bootstrap.min.css" rel="stylesheet" type="text/css">
 <link href="/resources/css/select2.min.css" rel="stylesheet" type="text/css">
 
-<link href="/resources/css/index.css?r=1" rel="stylesheet" type="text/css">
+<link href="/resources/css/index.css?r=6" rel="stylesheet" type="text/css">
 
 <script src="/resources/js/jquery.min.js"></script>
 <script src="/resources/js/select2.min.js"></script>
 <script src="/resources/js/sockjs.min.js"></script>
 <script src="/resources/js/stomp.min.js"></script>
 
-<script src="/resources/js/index.js?r=1"></script>
+<script src="/resources/js/index.js?r=3"></script>
 
 </body>
 </html>

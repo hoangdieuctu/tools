@@ -5,6 +5,8 @@ import io.kubernetes.client.openapi.ApiClient;
 import io.kubernetes.client.openapi.apis.CoreV1Api;
 import io.kubernetes.client.util.ClientBuilder;
 import io.kubernetes.client.util.KubeConfig;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,13 +17,20 @@ import java.io.IOException;
 @Configuration
 public class KubernetesConfig {
 
-    @Value("${cluster.mode}")
-    private boolean isInClusterMode;
+    private Logger logger = LoggerFactory.getLogger(KubernetesConfig.class);
+
+    @Value("${current.context}")
+    private String context;
 
     @Bean
     public ApiClient apiClient() throws IOException {
-        String configPath = System.getProperty("user.home") + "/" + Constants.CONFIG_FILE;
-        return isInClusterMode ? ClientBuilder.cluster().build() : ClientBuilder.kubeconfig(KubeConfig.loadKubeConfig(new FileReader(configPath))).build();
+        logger.info("Init kubernetes context: {}", context);
+
+        String configPath = System.getProperty("user.home") + Constants.SPLASH + Constants.CONFIG_FILE;
+        KubeConfig kubeConfig = KubeConfig.loadKubeConfig(new FileReader(configPath));
+        kubeConfig.setContext(context);
+
+        return ClientBuilder.kubeconfig(kubeConfig).build();
     }
 
     @Bean

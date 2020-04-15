@@ -83,3 +83,29 @@
 .level_ERROR {
     color: red !important;
 }
+
+#loading-parent {
+    min-width: 100%;
+    min-height: 100%;
+    position: absolute;
+    display: none;
+    z-index: 9999;
+    background: white;
+    opacity: 0.5;
+}
+
+#loading {
+    position: absolute;
+    top: 25%;
+    left: 49%;
+    display: none;
+    z-index: 1500;
+}
+
+.log_line {
+    display: inherit;
+}
+
+.log_line_at {
+    padding-left: 10px;
+}
